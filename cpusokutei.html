@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPU性能計測</title>
+    <style>
+        body, button, p {
+            font-size: 1.2em; /* 文字サイズを大きく設定 */
+        }
+        h1 {
+            font-size: 2em; /* 見出しの文字サイズを元に戻す */
+        }
+    </style>
+    <script>
+        function calculatePiDigits(digits) {
+            let pi = "3.";
+            let a = 1n, b = 0n, c = 1n, d = 1n;
+            for (let i = 0; i < digits; i++) {
+                let temp = 10n * (a * 2n + b);
+                let f = temp / c;
+                let g = f * c + (d - 10n * b);
+                if (g >= c * d) {
+                    pi += f.toString();
+                    a = 10n * (a % c);
+                    b = g;
+                } else {
+                    a = temp;
+                    b *= 10n;
+                }
+            }
+            return pi;
+        }
+
+        function measurePerformance() {
+            const digits = 1000000;
+            const startTime = performance.now();
+            calculatePiDigits(digits);
+            const endTime = performance.now();
+            const duration = endTime - startTime;
+            const score = 1000000 / duration;
+            document.getElementById("result").innerText = `計算時間: ${duration.toFixed(2)} ミリ秒`;
+            document.getElementById("score").innerText = `スコア: ${score.toFixed(2)}`;
+        }
+    </script>
+</head>
+<body>
+    <h1>CPU性能計測</h1>
+    <button onclick="measurePerformance()">計測開始</button>
+    <p id="result"></p>
+    <p id="score"></p>
+</body>
+</html>
